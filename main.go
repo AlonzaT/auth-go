@@ -23,8 +23,18 @@ func main() {
 
 	bs, err := json.Marshal(lp)
 	if err != nil {
+		//Panic is for programming errors
 		log.Panic(err)
 	}
 
 	fmt.Println(string(bs))
+
+	lp2 := []person{}
+
+	err = json.Unmarshal(bs, &lp2)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	fmt.Println("Back into data structure", lp2)
 }
