@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 )
 
 type person struct {
@@ -31,10 +32,31 @@ func main() {
 
 	lp2 := []person{}
 
+	//Unmarshall takes data and a pointer to where
+	//the data will be unmarshalled
 	err = json.Unmarshal(bs, &lp2)
 	if err != nil {
 		log.Panic(err)
 	}
 
 	fmt.Println("Back into data structure", lp2)
+
+	http.HandleFunc("/encode", foo)
+	http.HandleFunc("/decode", bar)
+	http.ListenAndServe(":8888", nil)
+}
+
+func foo(w http.ResponseWriter, r *http.Request) {
+	p3 := person{
+		First: "jenny",
+	}
+
+	err := json.NewEncoder(w).Encode(p3)
+	if err != nil {
+		log.Println("Got bad data!", err)
+	}
+}
+
+func bar(w http.ResponseWriter, r *http.Request) {
+
 }
